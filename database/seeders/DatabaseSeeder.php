@@ -2,24 +2,46 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Cinema;
+use App\Models\Movie;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $cinema = Cinema::create([
+            'name' => 'Cinema Booking Central',
+            'address' => 'Jl. Cinema No. 1',
+            'city' => 'Surabaya',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $studio = $cinema->studios()->create([
+            'name' => 'Studio 1',
+            'capacity' => 50,
+        ]);
+
+        foreach (range('A', 'E') as $row) {
+            foreach (range(1, 10) as $number) {
+                $studio->seats()->create([
+                    'row' => $row,
+                    'number' => $number,
+                ]);
+            }
+        }
+
+        Movie::create([
+            'title' => 'Interstellar',
+            'description' => 'A science fiction movie about space and time.',
+            'duration_minutes' => 169,
+            'release_date' => '2014-11-07',
+        ]);
+
+        Movie::create([
+            'title' => 'Resident Evil',
+            'description' => 'A survival horror movie.',
+            'duration_minutes' => 110,
+            'release_date' => '2026-09-01',
         ]);
     }
 }
