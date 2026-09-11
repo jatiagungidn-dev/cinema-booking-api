@@ -11,7 +11,7 @@ class StudioFactory extends Factory
     {
         return [
             'cinema_id' => Cinema::factory(),
-            'name' => 'Studio'.fake()->numberBetween(1, 10),
+            'name' => 'Studio '.fake()->numberBetween(1, 10),
             'capacity' => fake()->numberBetween(50, 200),
         ];
     }

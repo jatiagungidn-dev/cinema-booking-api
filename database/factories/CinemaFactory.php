@@ -9,7 +9,7 @@ class CinemaFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->company().'Cinema',
+            'name' => fake()->company().' Cinema',
             'address' => fake()->address(),
             'city' => fake()->city(),
         ];
