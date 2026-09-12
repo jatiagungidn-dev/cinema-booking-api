@@ -11,6 +11,12 @@ class Seat extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'studio_id',
+        'row',
+        'number',
+    ];
+
     public function studio(): BelongsTo
     {
         return $this->belongsTo(Studio::class);
