@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Cinema;
-use App\Models\Seat;
 use App\Models\Studio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -55,7 +54,7 @@ class CinemaApiTest extends TestCase
     public function test_studio_seat_can_be_listed(): void
     {
         $studio = Studio::factory()->create();
-        
+
         $studio->seats()->createMany([
             ['row' => 'A', 'number' => 1],
             ['row' => 'A', 'number' => 2],
