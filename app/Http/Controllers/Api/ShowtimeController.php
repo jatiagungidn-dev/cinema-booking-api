@@ -8,7 +8,7 @@ use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ShowtimeContorller extends Controller
+class ShowtimeController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {

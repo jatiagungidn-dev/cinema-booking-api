@@ -100,4 +100,30 @@ class BookingApiTest extends TestCase
             ->assertOk()
             ->assertJsonCount(1, 'data');
     }
+
+    public function test_booking_requires_showtime_id(): void
+    {
+        $response = $this->postJson('/api/bookings', [
+            'seat_ids' => [1],
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'showtime_id',
+            ]);
+    }
+
+    public function test_booking_requires_seat_ids(): void
+    {
+        $response = $this->postJson('/api/bookings', [
+            'showtime_id' => 1,
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'seat_ids',
+            ]);
+    }
 }
