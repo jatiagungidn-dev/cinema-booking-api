@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\CinemaController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\MovieController;
@@ -21,6 +22,10 @@ Route::get('/showtimes/{showtime}', [ShowtimeContorller::class, 'show']);
 
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{movie}', [MovieController::class, 'show']);
+
+Route::get('/bookings', [BookingController::class, 'index']);
+Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+Route::post('/bookings', [BookingController::class, 'store']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();

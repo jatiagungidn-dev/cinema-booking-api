@@ -5,12 +5,18 @@ namespace Database\Seeders;
 use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\Showtime;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $user = User::firstOrCreate(
+            ['email' => 'demo@example.com'],
+            ['name' => 'Demo User', 'password' => bcrypt('password')]
+        );
+
         $cinema = Cinema::create([
             'name' => 'Cinema Booking Central',
             'address' => 'Jl. Cinema No. 1',

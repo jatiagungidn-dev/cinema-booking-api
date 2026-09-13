@@ -10,6 +10,13 @@ class BookingSeat extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'booking_id',
+        'showtime_id',
+        'seat_id',
+        'price',
+    ];
+
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
