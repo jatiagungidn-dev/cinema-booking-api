@@ -156,4 +156,37 @@ class BookingApiTest extends TestCase
                 'seat_ids',
             ]);
     }
+
+    public function test_booking_rejects_already_booked_seat(): void
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+        $studio = Studio::factory()->create();
+        $seat = Seat::create([
+            'studio_id' => $studio->id,
+            'row' => 'A',
+            'number' => 1,
+        ]);
+
+        $showtime = Showtime::factory()
+            ->for($movie)
+            ->for($studio)
+            ->create();
+
+        $this->actingAs($user)
+            ->postJson('/api/bookings', [
+                'showtime_id' => $showtime->id,
+                'seat_ids' => [$seat->id],
+            ])
+            ->assertCreated();
+
+        $response = $this->actingAs($user)
+            ->postJson('/api/bookings', [
+                'showtime_id' => $showtime->id,
+                'seat_ids' => [$seat->id],
+            ]);
+
+        $response->assertStatus(409);
+    }
 }
