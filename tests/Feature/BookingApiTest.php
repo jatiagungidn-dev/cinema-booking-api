@@ -126,4 +126,34 @@ class BookingApiTest extends TestCase
                 'seat_ids',
             ]);
     }
+
+    public function test_booking_rejects_seat_from_another_studio(): void
+    {
+        $movie = Movie::factory()->create();
+
+        $showtimeStudio = Studio::factory()->create();
+        $otherStudio = Studio::factory()->create();
+
+        $showtime = Showtime::factory()
+            ->for($movie)
+            ->for($showtimeStudio)
+            ->create();
+
+        $seat = Seat::create([
+            'studio_id' => $otherStudio->id,
+            'row' => 'A',
+            'number' => 1,
+        ]);
+
+        $response = $this->postJson('/api/bookings', [
+            'showtime_id' => $showtime->id,
+            'seat_ids' => [$seat->id],
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'seat_ids',
+            ]);
+    }
 }
