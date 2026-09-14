@@ -30,9 +30,11 @@ Route::get('/showtimes/{showtime}', [ShowtimeController::class, 'show']);
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{movie}', [MovieController::class, 'show']);
 
-Route::get('/bookings', [BookingController::class, 'index']);
-Route::get('/bookings/{booking}', [BookingController::class, 'show']);
-Route::post('/bookings', [BookingController::class, 'store']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();

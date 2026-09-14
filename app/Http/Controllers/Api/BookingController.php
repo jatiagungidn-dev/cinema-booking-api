@@ -8,20 +8,26 @@ use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use App\Models\Seat;
 use App\Models\Showtime;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    use AuthorizesRequests;
+
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $bookings = Booking::query()->with('bookingSeats')->latest()->paginate(10);
+        $bookings = Booking::query()->where('user_id', $request->user()->id)->with('bookingSeats')->latest()->paginate(10);
 
         return BookingResource::collection($bookings);
     }
 
-    public function show(Booking $booking): BookingResource
+    public function show(Request $request, Booking $booking): BookingResource
     {
+        $this->authorize('view', $booking);
+
         $booking->load('bookingSeats');
 
         return new BookingResource($booking);
@@ -38,10 +44,10 @@ class BookingController extends Controller
         $totalAmount = $seats->count() * $showtime->price;
 
         $booking = DB::transaction(function () use (
-            $showtime, $seats, $totalAmount
+            $request, $showtime, $seats, $totalAmount
         ) {
             $booking = Booking::create([
-                'user_id' => 1,
+                'user_id' => $request->user()->id,
                 'showtime_id' => $showtime->id,
                 'status' => 'PENDING',
                 'total_amount' => $totalAmount,
